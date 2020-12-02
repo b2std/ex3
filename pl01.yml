@@ -1,0 +1,25 @@
+---
+- name: git testing
+  hosts: dev
+  become: yes
+
+  tasks:
+  - name git install
+    apt:
+      name: git
+      status: present
+      update_cache: yes
+
+  - name: git checkout
+    git:
+      repo: "https://github.com/b2std/ex2.git"
+      dest: /root/proj01/
+
+  - name: maven installation
+    apt:
+      name: maven
+      state: present
+      update_cache: yes
+
+  - name: build war
+    shell: mvn -f ./boxfuse-sample-java-war-hello/pom.xml package   
