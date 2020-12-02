@@ -1,0 +1,23 @@
+- name: prod srv config
+  hosts: prod
+  become: yes
+
+  tasks:
+  - name: installation of jre, tomcat9
+    apt:
+      name: {{ item }}
+      state: present
+    with_items:
+      - openjdk-11-jdk
+      - tomcat9
+
+  - name: start tomcat9
+    service:
+      name: tomcat9
+      state: started
+
+  - name: copy war to tomcat workdir
+    copy:
+      src: /root/proj01/hello-1.0.war
+      dest: /var/lib/tomcat9/webapps/
+      
